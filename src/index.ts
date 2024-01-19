@@ -4,11 +4,12 @@ require('dotenv').config();
 
 import { load } from 'cheerio';
 import puppeteer from 'puppeteer';
+import { formatarMoedaBRL, parsePrice, toReal } from './utils/currencyFormat';
+import { MercadoLivre } from './marketplaces/ml';
+
 
 try {
-
     const bot = new Telegraf(process.env.BOT_TOKEN as string);
-
     bot.start((ctx) => {
         let message = `Please select an option from the menu below`;
         ctx.replyWithHTML(message, Markup.keyboard([
@@ -18,27 +19,6 @@ try {
         ]).resize());
     })
 
-    bot.hears('Option 1', async (ctx) => {
-        const url = ctx.message.text;
-
-        // verify if this is a url valid
-        const regex = new RegExp('^(ftp|http|https):\/\/[^ "]+$');
-
-        if (!regex.test(url)) {
-            ctx.reply('Invalid URL');
-            return;
-        }
-
-        axios.get(url).then(response => {
-            const html = load(response.data)
-            const productName = html('script[type="application/ld+json"]').first().html();
-            let parsedJson = JSON.parse(productName as string);
-            const { name, image, offers } = parsedJson
-            ctx.reply({ text: name })
-            ctx.reply({ text: offers.price })
-            ctx.sendPhoto(image)
-        })
-    });
 
     bot.on('text', async (ctx) => {
         const url = ctx.message.text;
@@ -51,43 +31,37 @@ try {
             return;
         }
 
-        axios.get(url).then(response => {
-            const html = load(response.data)
-            const productName = html('script[type="application/ld+json"]').first().html();
 
-            const oldPrice = html('span.andes-money-amount__fraction').first().html() as string
-
-            let parsedJson = JSON.parse(productName as string);
-
-
-            
+        await MercadoLivre(url).then(response => {
+            ctx.reply({ text: response.name })
+            ctx.reply({ text: response.offers })
+            response.oldPrice && ctx.reply({ text: response.oldPrice })
+            ctx.reply({ text: response.freeShipping ? 'Frete grátis' : 'Frete não incluso' })
+            ctx.sendPhoto(response.image)
 
 
-            puppeteer.launch().then(async browser => {
+            const formData = new FormData();
+            formData.append('file', response.image);
 
-                // Open new page
-                const page = await browser.newPage();
 
-                // Go to website
-                await page.goto(url);
+            axios.post('https://directus-store.dsolucoes.dev.br/files/import', {
+                "url": response.image
 
-                await page.screenshot({ path: 'example.png', fullPage: true });
+            }, {
+                headers: {
+                    Authorization: `Bearer ${process.env.USER_BOT_DIRECTUS_TOKEN}`
+                }
+            }).then(response => {
+                console.log(response.data);
+            }).catch(err => {
+                console.log(err.response.data);
+
             })
 
-            const freeShippingElement = html('.ui-pdp-color--GREEN');
 
-            if (freeShippingElement.text().toUpperCase().includes('FRETE GRÁTIS')) {
-                ctx.reply('Frete grátis.');
-            }
-            
-            const { name, image, offers } = parsedJson
-            ctx.reply({ text: name })
-            ctx.reply({ text: offers.price })
-            ctx.reply({ text: oldPrice })
-            ctx.sendPhoto(image,{
-                caption: 'This is a caption!'
-            
-            })
+        }
+        ).catch(err => {
+            ctx.reply(err.message);
         })
     });
 
