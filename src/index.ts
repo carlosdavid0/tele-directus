@@ -55,18 +55,13 @@ try {
             const html = load(response.data)
             const productName = html('script[type="application/ld+json"]').first().html();
 
-            const oldPrice = html('span.andes-money-amount__fraction').first().html();
+            const oldPrice = html('span.andes-money-amount__fraction').first().html() as string
 
             let parsedJson = JSON.parse(productName as string);
 
 
-            console.log(parsedJson);
             
 
-            const { name, image, offers } = parsedJson
-            ctx.reply({ text: name })
-            ctx.reply({ text: offers.price })
-            ctx.sendPhoto(image)
 
             puppeteer.launch().then(async browser => {
 
@@ -82,10 +77,17 @@ try {
             const freeShippingElement = html('.ui-pdp-color--GREEN');
 
             if (freeShippingElement.text().toUpperCase().includes('FRETE GRÁTIS')) {
-                ctx.reply('Free shipping!');
-            } else {
-                ctx.reply('Not free shipping.');
+                ctx.reply('Frete grátis.');
             }
+            
+            const { name, image, offers } = parsedJson
+            ctx.reply({ text: name })
+            ctx.reply({ text: offers.price })
+            ctx.reply({ text: oldPrice })
+            ctx.sendPhoto(image,{
+                caption: 'This is a caption!'
+            
+            })
         })
     });
 
