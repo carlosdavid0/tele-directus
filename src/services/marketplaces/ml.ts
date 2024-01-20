@@ -4,10 +4,6 @@ import { requestProdudcts } from "@/@types/requests";
 import puppeteer from "puppeteer";
 
 
-
-
-
-
 export async function MercadoLivre(url: string): Promise<requestProdudcts> {
     const regex = new RegExp('^(ftp|http|https):\/\/[^ "]+$');
 
@@ -19,20 +15,9 @@ export async function MercadoLivre(url: string): Promise<requestProdudcts> {
     const html = load(data)
     const productName = html('script[type="application/ld+json"]').first().html();
 
-
     let parsedJson = JSON.parse(productName as string);
 
     const freeShippingElement = html('.ui-pdp-color--GREEN').text().toUpperCase().includes('FRETE GRÁTIS')
-
-    console.log(html('.ui-pdp-color--GREEN').text());
-
-    puppeteer.launch().then(async browser => {
-        const page = await browser.newPage();
-        await page.goto(url);
-        await page.screenshot({ path: 'example.png', fullPage: true });
-
-        await browser.close();
-    })
 
     const { name, image, offers } = parsedJson
 
@@ -46,7 +31,6 @@ export async function MercadoLivre(url: string): Promise<requestProdudcts> {
 
     const oldPriceFirst = oldPriceFractionFirst || oldPriceCentsFirst ? `${oldPriceFractionFirst ? oldPriceFractionFirst : '00'},${oldPriceCentsFirst ? oldPriceCentsFirst : '00'}` : null;
     const oldPriceSecc = oldPriceFractionSecc || oldPriceCentsSecc ? `${oldPriceFractionSecc ? oldPriceFractionSecc : '00'},${oldPriceCentsSecc ? oldPriceCentsSecc : '00'}` : null;
-
 
 
     return {
