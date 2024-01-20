@@ -5,7 +5,8 @@ require('dotenv').config();
 import { load } from 'cheerio';
 import puppeteer from 'puppeteer';
 import { formatarMoedaBRL, parsePrice, toReal } from './utils/currencyFormat';
-import { MercadoLivre } from './marketplaces/ml';
+import { MercadoLivre } from '../src/services/marketplaces/ml';
+import { createProduto } from './services/directus/products';
 
 
 try {
@@ -32,46 +33,29 @@ try {
         }
 
 
-        await MercadoLivre(url).then(response => {
+        await MercadoLivre(url).then( async (response) => {
             ctx.reply({ text: response.name })
             ctx.reply({ text: response.offers })
-            response.oldPrice && ctx.reply({ text: response.oldPrice })
+         
             ctx.reply({ text: response.freeShipping ? 'Frete grátis' : 'Frete não incluso' })
             ctx.sendPhoto(response.image)
+            
 
-
-            const formData = new FormData();
-            formData.append('file', response.image);
-
-
-            axios.post('https://directus-store.dsolucoes.dev.br/files/import', {
-                "url": response.image
-
-            }, {
-                headers: {
-                    Authorization: `Bearer ${process.env.USER_BOT_DIRECTUS_TOKEN}`
-                }
-            }).then(response => {
-                console.log(response.data);
-            }).catch(err => {
-                console.log(err.response.data);
-
+            await createProduto(response).then((response) => {
+                ctx.reply('Produto cadastrado com sucesso');
             })
-
 
         }
         ).catch(err => {
-            ctx.reply(err.message);
+            console.log(err);
+            
+            // ctx.reply(err.message);
         })
     });
 
 
-    bot.launch().then(() => {
-        console.log('Bot started');
-    }
-    ).catch((err) => {
-        console.log(err);
-    });
+    bot.launch()
+    console.log('Bot is running!');
 
 } catch (error) {
     console.log(error);
