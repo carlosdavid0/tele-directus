@@ -1,12 +1,8 @@
 import axios from 'axios';
 import { Telegraf, Markup } from 'telegraf';
-require('dotenv').config();
-
-import { load } from 'cheerio';
-import puppeteer from 'puppeteer';
-import { formatarMoedaBRL, parsePrice, toReal } from './utils/currencyFormat';
-import { MercadoLivre } from '../src/services/marketplaces/ml';
-import { createProduto } from './services/directus/products';
+require('dotenv').config();;
+import { MercadoLivre } from '@/services/marketplaces/ml';
+import { createProduto } from '@/services/directus/products';
 
 
 try {
@@ -14,9 +10,9 @@ try {
     bot.start((ctx) => {
         let message = `Please select an option from the menu below`;
         ctx.replyWithHTML(message, Markup.keyboard([
-            ['Option 1', 'Option 2'], // Linha 1 com 2 opções
-            ['Option 3', 'Option 4'], // Linha 2 com 2 opções
-            ['Option 5', 'Option 6', 'Option 7'] // Linha 3 com 3 opções
+            ['Option 1', 'Option 2'], 
+            ['Option 3', 'Option 4'], 
+            ['Option 5', 'Option 6', 'Option 7'] 
         ]).resize());
     })
 
@@ -24,7 +20,7 @@ try {
     bot.on('text', async (ctx) => {
         const url = ctx.message.text;
 
-        // verify if this is a url valid
+
         const regex = new RegExp('^(ftp|http|https):\/\/[^ "]+$');
 
         if (!regex.test(url)) {
@@ -40,16 +36,16 @@ try {
             ctx.reply({ text: response.freeShipping ? 'Frete grátis' : 'Frete não incluso' })
             ctx.sendPhoto(response.image)
             
-
-            await createProduto(response).then((response) => {
+            await createProduto(response).then(() => {
                 ctx.reply('Produto cadastrado com sucesso');
             })
 
         }
         ).catch(err => {
             console.log(err);
-            
-            // ctx.reply(err.message);
+
+
+            ctx.reply('Produto não encontrado');
         })
     });
 
