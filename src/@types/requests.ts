@@ -4,4 +4,5 @@ export type requestProdudcts = {
     offers: string,
     oldPrice?: string | null,
     freeShipping: boolean
+    url: string
 }
