@@ -13,8 +13,5 @@ RUN npm install
 # Copie o resto dos arquivos do projeto para o diretório de trabalho
 COPY . .
 
-# Expõe a porta que o aplicativo usará
-EXPOSE 80
-
 # Comando para iniciar o aplicativo
 CMD [ "node", "./dist/index.js" ]
