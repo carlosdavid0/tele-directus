@@ -3,7 +3,8 @@ import { Telegraf, Markup } from 'telegraf';
 require('dotenv').config();;
 import { MercadoLivre } from '@/services/marketplaces/ml';
 import { createProduto } from '@/services/directus/products';
-
+import svg2img  from 'svg2img';
+import { modelSVG } from './assets/modelSvg';
 
 try {
     const bot = new Telegraf(process.env.BOT_TOKEN as string);
@@ -30,15 +31,23 @@ try {
 
 
         await MercadoLivre(url).then( async (response) => {
-            ctx.reply({ text: response.name })
-            ctx.reply({ text: response.offers })
+            // ctx.reply({ text: response.name })
+            // ctx.reply({ text: response.offers })
          
-            ctx.reply({ text: response.freeShipping ? 'Frete grátis' : 'Frete não incluso' })
-            ctx.sendPhoto(response.image)
+            // ctx.reply({ text: response.freeShipping ? 'Frete grátis' : 'Frete não incluso' })
+            // ctx.sendPhoto(response.image)
             
             await createProduto(response).then(() => {
                 ctx.reply('Produto cadastrado com sucesso');
             })
+
+            
+            let svgTOSEND = modelSVG(response);
+
+            svg2img(await svgTOSEND, function(error, buffer) {
+                //returns a Buffer
+                ctx.replyWithPhoto({ source: buffer });
+            });
 
         }
         ).catch(err => {
