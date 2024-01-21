@@ -1,5 +1,5 @@
 import { requestProdudcts } from "@/@types/requests";
-import { formatarMoedaBRL } from "@/utils/currencyFormat";
+import { calculaDesconto, formatarMoedaBRL } from "@/utils/currencyFormat";
 import axios from "axios";
 import sharp from "sharp";
 
@@ -10,8 +10,8 @@ export async function modelSVG(data: requestProdudcts) {
    const image = await axios.get(data.image, { responseType: 'arraybuffer' });
 
 
-   console.log({oldPrice: data.oldPrice});
-   
+   console.log({ oldPrice: data.oldPrice });
+
 
 
    const convertedImage = await sharp(image.data)
@@ -50,7 +50,8 @@ export async function modelSVG(data: requestProdudcts) {
 
 
    return `
- <svg
+   
+   <svg
    width="1080"
    zoomAndPan="magnify"
    viewBox="0 0 810 1439.999935"
@@ -75,9 +76,9 @@ export async function modelSVG(data: requestProdudcts) {
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="0.57231455"
-     inkscape:cx="685.81167"
-     inkscape:cy="921.69594"
+     inkscape:zoom="0.4046875"
+     inkscape:cx="704.2471"
+     inkscape:cy="819.15058"
      inkscape:window-width="1920"
      inkscape:window-height="991"
      inkscape:window-x="-9"
@@ -1477,13 +1478,14 @@ export async function modelSVG(data: requestProdudcts) {
      style="fill:url(#6f404af825);stroke-width:0.833333" />
   <g
      clip-path="url(#69b4103202)"
-     id="g269">
+     id="g269"
+     transform="matrix(1,0,0,0.95722162,0,46.339678)">
     <g
        clip-path="url(#4971532d00)"
        id="g268">
       <path
          fill="#e44650"
-         d="M 53.367188 194.867188 L 797.769531 194.867188 L 797.769531 1084.660156 L 53.367188 1084.660156 Z M 53.367188 194.867188 "
+         d="M 53.367188,194.86719 H 797.76953 V 1084.6602 H 53.367188 Z m 0,0"
          fill-opacity="1"
          fill-rule="nonzero"
          id="path268" />
@@ -1491,13 +1493,14 @@ export async function modelSVG(data: requestProdudcts) {
   </g>
   <g
      clip-path="url(#e3f3afe5f0)"
-     id="g271">
+     id="g271"
+     transform="matrix(1,0,0,0.95153382,0,51.379448)">
     <g
        clip-path="url(#17e3ae59f3)"
        id="g270">
       <path
          fill="#ffffff"
-         d="M 24.464844 194.867188 L 766.292969 194.867188 L 766.292969 1061.300781 L 24.464844 1061.300781 Z M 24.464844 194.867188 "
+         d="M 24.464844,194.86719 H 766.29297 V 1061.3008 H 24.464844 Z m 0,0"
          fill-opacity="1"
          fill-rule="nonzero"
          id="path269" />
@@ -1702,7 +1705,7 @@ export async function modelSVG(data: requestProdudcts) {
   <g
      clip-path="url(#e61f9207f9)"
      id="g304"
-     transform="matrix(1.0553012,0,0,0.88720742,-8.3707005,74.565517)">
+     transform="matrix(1.0553012,0,0,0.88720742,-8.3707005,94.065517)">
     <g
        clip-path="url(#4032659dc0)"
        id="g303">
@@ -1715,73 +1718,101 @@ export async function modelSVG(data: requestProdudcts) {
     </g>
   </g>
   <text
-  xml:space="preserve"
-  style="font-size:40px;fill:#000000;stroke-width:0.75"
-  x="54.62524"
-  y="714.80475"
-  id="text304">
-  <tspan
-    sodipodi:role="line"
-    style="font-size:40px;stroke-width:0.75"
-    x="54.62524"
-    y="714.80475"
-    id="tspan305">${limitStringWidth(data.name, 30, 2)[0].trim().replace(/\s{2,}/g, ' ')}</tspan>
-    <tspan
-    sodipodi:role="line"
-    style="font-size:40px;stroke-width:0.75"
-    x="54.62524"
-    y="763.55475"
-    id="tspan315">${limitStringWidth(data.name, 30, 2)[1].trim().replace(/\s{2,}/g, ' ')}</tspan>
-    </text>
+     xml:space="preserve"
+     style="font-size:40px;fill:#000000;stroke-width:0.75"
+     x="54.62524"
+     y="720.80475"
+     id="text304"><tspan
+   sodipodi:role="line"
+   style="font-size:40px;stroke-width:0.75"
+   x="54.62524"
+   y="720.80475"
+   id="tspan305">${limitStringWidth(data.name, 30, 2)[0].trim().replace(/\s{2,}/g, ' ')}</tspan>
+<tspan
+   sodipodi:role="line"
+   style="font-size:40px;stroke-width:0.75"
+   x="54.62524"
+   y="769.80475"
+   id="tspan315">${limitStringWidth(data.name, 30, 2)[1].trim().replace(/\s{2,}/g, ' ')}</tspan></text>
   <text
      xml:space="preserve"
      style="font-size:25px;fill:#34a34a;fill-opacity:1;stroke-width:0.75"
      x="56.862354"
-     y="805.71698"
+     y="810.71698"
      id="text309"><tspan
-       sodipodi:role="line"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#34a34a;fill-opacity:1;stroke-width:0.75"
-       x="56.862354"
-       y="805.71698"
-       id="tspan309"></tspan>${data.freeShipping ? 'Frete grátis': ''}</text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:23px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#b3b3b3;fill-opacity:1;stroke-width:0.75"
-       x="59.868572"
-       y="855.73572"
-       id="text311">
-     <tspan
-     id="tspan311"
-     style="font-size:23px;text-decoration:line-through;text-decoration-line:line-through;fill:#b3b3b3;stroke-width:0.75"
+   sodipodi:role="line"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#34a34a;fill-opacity:1;stroke-width:0.75"
+   x="56.862354"
+   y="810.71698"
+   id="tspan309" />${data.freeShipping ? 'Frete grátis*' : ''}</text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:23px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#b3b3b3;fill-opacity:1;stroke-width:0.75"
      x="59.868572"
-     y="855.73572">${data.oldPrice ? formatarMoedaBRL(Number(data.oldPrice.replace('.', '').replace(',', '.'))): ''}</tspan> 
-       </text>
+     y="855.73572"
+     id="text311">
+  <tspan
+   id="tspan311"
+   style="font-size:23px;text-decoration:line-through;text-decoration-line:line-through;fill:#b3b3b3;stroke-width:0.75"
+   x="59.868572"
+   y="870.73572">${data.oldPrice ? formatarMoedaBRL(Number(data.oldPrice.replace('.', '').replace(',', '.'))) : ''}</tspan> 
+    </text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:43px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#b3b3b3;fill-opacity:1;stroke-width:0.75"
      x="62.902473"
-     y="913.40515"
+     y="932.90515"
      id="text312"><tspan
        sodipodi:role="line"
        id="tspan312"
-       style="font-size:43px;stroke-width:0.75; margin-top: 10px;"
+       style="font-size:43px;stroke-width:0.75"
        x="62.902473"
-       y="913.40515">${formatarMoedaBRL(data.offers)}</tspan></text>
+       y="932.90515">${formatarMoedaBRL(data.offers)} *</tspan></text>
   <text
      xml:space="preserve"
-     style="font-size:25px;fill:#34a34a;fill-opacity:1;stroke-width:0.75"
-     x="353.43497"
-     y="911.42151"
+     style="font-size:28px;fill:#34a34a;fill-opacity:1;stroke-width:0.75"
+     x="291.93497"
+     y="927.92151"
      id="text313"><tspan
        sodipodi:role="line"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#34a34a;fill-opacity:1;stroke-width:0.75"
-       x="353.43497"
-       y="911.42151"
-       id="tspan313">0% OFF</tspan></text>
- 
-       <image width="300" height="350" preserveAspectRatio="none" style="image-rendering:optimizeSpeed" xlink:href="data:image/jpeg;base64,${base64Image}" id="image1" x="268.24377" y="266.55405" />
-
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:28px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#34a34a;fill-opacity:1;stroke-width:0.75"
+       x="330.93497"
+       y="927.92151"
+       id="tspan313">${data.oldPrice ? `${calculaDesconto(Number(data.oldPrice.replace('.', '').replace(',', '.')), Number(data.offers))}% OFF` : ''}</tspan></text>
+  <image
+     width="300"
+     height="350"
+     preserveAspectRatio="none"
+     style="image-rendering:optimizeSpeed"
+     xlink:href="data:image/jpeg;base64,${base64Image}"
+     id="image1"
+     x="245.37891"
+     y="285.55405" />
+  <text
+     xml:space="preserve"
+     style="font-size:19px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#4d4d4d;stroke:#4d4d4d;stroke-width:0.75"
+     x="90.422302"
+     y="1004.9557"
+     id="text2"><tspan
+       sodipodi:role="line"
+       id="tspan2"
+       style="font-size:19px;fill:#4d4d4d;stroke-width:0.75"
+       x="90.422302"
+       y="1004.9557">* Preço e disponibilidade sujeito a alteração a qualquer momento.</tspan></text>
+  
+  <text
+     xml:space="preserve"
+     style="font-size:45.6836px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#f9f9f9;stroke:#ffffff;stroke-width:0.380697"
+     x="220.37891"
+     y="186.03696"
+     id="text1"><tspan
+       sodipodi:role="line"
+       id="tspan1"
+       style="font-size:45.6836px;fill:#f9f9f9;stroke:#ffffff;stroke-width:0.380697; text-align: center;"
+       x="173.85973"
+       y="186.03696">@promodocarlimdavid</tspan></text>
 </svg>
+
 
   `
 }
