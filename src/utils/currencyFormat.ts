@@ -12,8 +12,7 @@ export function toReal(number: number): string {
 
     
     const valorNumerico = typeof valor === 'string' ? parseFloat(valor.replace('', '.')) : valor;
-    
-    console.log(valorNumerico);
+
 
     if (isNaN(valorNumerico)) {
         throw new Error('Valor não é um número válido.');
