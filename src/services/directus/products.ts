@@ -1,6 +1,6 @@
 import axios from "axios";
-import { requestProdudcts } from "@/@types/requests";
-import { env } from "@/utils/env";
+import { requestProdudcts } from "../../@types/requests";
+import { env } from "../../utils/env";
 
 export async function createProduto({ freeShipping, image, name, offers, oldPrice, url }: requestProdudcts) {
 

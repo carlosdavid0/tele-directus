@@ -1,5 +1,5 @@
-import { requestProdudcts } from "@/@types/requests";
-import { calculaDesconto, formatarMoedaBRL } from "@/utils/currencyFormat";
+import { requestProdudcts } from "../@types/requests";
+import { calculaDesconto, formatarMoedaBRL } from "../utils/currencyFormat";
 import axios from "axios";
 import sharp from "sharp";
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { load } from "cheerio";
-import { requestProdudcts } from "@/@types/requests";
-import puppeteer from "puppeteer";
+import { requestProdudcts } from "../../@types/requests";
+
 
 
 export async function MercadoLivre(url: string): Promise<requestProdudcts> {

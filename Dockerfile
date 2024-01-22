@@ -13,5 +13,8 @@ RUN npm install
 # Copie o resto dos arquivos do projeto para o diretório de trabalho
 COPY . .
 
+# Compile o projeto
+RUN npm run build
+
 # Comando para iniciar o aplicativo
 CMD [ "node", "./dist/index.js" ]
