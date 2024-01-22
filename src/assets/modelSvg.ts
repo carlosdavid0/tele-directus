@@ -1765,7 +1765,7 @@ export async function modelSVG(data: requestProdudcts) {
      id="text312"><tspan
        sodipodi:role="line"
        id="tspan312"
-       style="font-size:43px;stroke-width:0.75"
+       style="font-size:39px;stroke-width:0.75"
        x="62.902473"
        y="932.90515">${formatarMoedaBRL(data.offers)} *</tspan></text>
   <text
